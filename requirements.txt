@@ -1,0 +1,9 @@
+# Interfaz web
+flask>=3.0
+python-dotenv>=1.0
+# Análisis de sentimiento de las opiniones
+transformers==5.22.1
+torch==2.15.0
+# Asistente de IA (Gemini). Si no lo instalas, la web abre igual pero el chat avisará del error.
+google-adk
+google-genai

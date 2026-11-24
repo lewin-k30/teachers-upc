@@ -1,0 +1,16 @@
+id,estudiante_id,docente_id,comentario,puntaje,sentimiento,confianza
+1,1,1,Explica muy bien y resuelve dudas.,5,POSITIVO,0.91
+2,2,1,Exámenes exigentes pero se aprende.,4,NEUTRAL,0.59
+3,3,2,el profesor enseña muy bien solo que no actualiza las fechas de los entregables...,4,NEGATIVO,0.66
+4,3,2,malisimo,1,NEGATIVO,0.93
+5,3,2,el profesor enseña bien pero es muy distraido,4,NEGATIVO,0.55
+6,4,2,MUY BUEN PROFE,5,POSITIVO,0.95
+7,4,1,MALISIMA ,1,NEGATIVO,0.93
+8,4,2,no recomiendo califica mal,3,NEGATIVO,0.68
+9,4,1,tiene apciencia,5,NEUTRAL,0.51
+10,4,3,malisimo,1,NEGATIVO,0.93
+11,4,4,super paciente,5,NEUTRAL,0.56
+12,4,5,super buenooooooooo ,5,POSITIVO,0.91
+13,5,2,el profesor no enseña casi nada y deja todo para ultimo momento ,1,NEGATIVO,0.96
+14,10,2,"el profe ayuda mucho en clases y todo, puedes escribirle al aula virtual y te ayuda resolviendo dudas y aja, pero cuando toca examenes ya fuiste bro, si estas acostumbrado a usar ia, con el no te salvas porque ees muy atento y no deja nada al azar",4,POSITIVO,0.58
+15,14,2,"es el ,meejor y lo recomeindo un monton",5,POSITIVO,0.91

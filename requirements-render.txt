@@ -1,0 +1,7 @@
+# Versión liviana para Render (plan gratuito, 512 MB de RAM): SIN torch ni transformers.
+# El análisis de sentimiento se hace con Gemini (SENTIMIENTO_BACKEND=gemini).
+flask>=3.0
+python-dotenv>=1.0
+gunicorn>=22.0
+google-adk
+google-genai

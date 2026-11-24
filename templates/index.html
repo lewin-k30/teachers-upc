@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teachers UPC - Califica y encuentra a tus docentes</title>
+  <meta name="description" content="Lee opiniones de otros alumnos, compara docentes y comparte tu experiencia en la UPC.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🎓%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  <!-- BARRA SUPERIOR -->
+  <header class="barra-superior">
+    <a class="marca" href="/" aria-label="Teachers UPC, inicio"><span class="logo">🎓</span><h2>TEACHERS UPC</h2></a>
+    <div class="zona-usuario">
+      <span id="saludoUsuario" class="saludo" hidden></span>
+      <button id="btnAbrirLogin" class="btn-registro btn-claro">Iniciar sesión</button>
+      <button id="btnAbrirRegistro" class="btn-registro">Registrarse</button>
+      <button id="btnLogout" class="btn-registro" hidden>Cerrar sesión</button>
+    </div>
+  </header>
+
+  <!-- PORTADA (visitantes sin sesión) -->
+  <section id="landing" class="landing">
+    <div class="recuadro hero">
+      <h1>Elige mejor a tus docentes</h1>
+      <p>Lee opiniones reales de otros alumnos de la UPC, compara calificaciones y comparte tu propia experiencia. Además, nuestro asistente de IA te recomienda qué profesor te conviene para cada curso.</p>
+      <div class="hero-botones">
+        <button class="btn-principal" data-abrir="registro">Crear cuenta gratis</button>
+        <button class="btn-principal btn-claro" data-abrir="login">Ya tengo cuenta</button>
+      </div>
+      <div class="estadisticas" aria-label="Datos de la plataforma">
+        <div><strong class="stat-docentes">–</strong><span>docentes</span></div>
+        <div><strong class="stat-opiniones">–</strong><span>opiniones</span></div>
+        <div><strong class="stat-estudiantes">–</strong><span>estudiantes</span></div>
+      </div>
+    </div>
+
+    <div class="pasos">
+      <div class="paso"><span class="paso-icono">🔎</span><h3>Busca</h3><p>Encuentra a un docente por su nombre o por el curso que vas a llevar.</p></div>
+      <div class="paso"><span class="paso-icono">⭐</span><h3>Compara</h3><p>Mira su calificación, el gráfico de puntajes y lo que opinan otros alumnos.</p></div>
+      <div class="paso"><span class="paso-icono">🤖</span><h3>Pregunta a la IA</h3><p>Pídele un Top 5 o el mejor docente de una materia en segundos.</p></div>
+    </div>
+  </section>
+
+  <!-- APLICACIÓN (con sesión iniciada) -->
+  <div id="app" hidden>
+    <div class="recuadro bienvenida">
+      <div>
+        <h2 id="tituloBienvenida">Bienvenido</h2>
+        <p>Encuentra a tus docentes, lee las opiniones de otros alumnos y comparte la tuya.</p>
+      </div>
+      <div class="estadisticas">
+        <div><strong class="stat-docentes">–</strong><span>docentes</span></div>
+        <div><strong class="stat-opiniones">–</strong><span>opiniones</span></div>
+        <div><strong class="stat-estudiantes">–</strong><span>estudiantes</span></div>
+      </div>
+    </div>
+
+    <main>
+      <div class="contenedor-principal">
+
+        <!-- COLUMNA IZQUIERDA -->
+        <div class="columna-izquierda">
+
+          <!-- BUSCADOR -->
+          <div class="buscador">
+            <h2>Buscador</h2>
+            <input type="search" id="buscarProfesor" placeholder="Escribe un profesor o curso..." aria-label="Buscar profesor o curso">
+            <div class="fila-botones">
+              <button id="btnBuscar">Buscar</button>
+              <button id="btnTodos" class="btn-secundario">Ver todos</button>
+            </div>
+          </div>
+
+          <!-- INTELIGENCIA ARTIFICIAL -->
+          <div class="inteligencia-artificial">
+            <h2>Inteligencia Artificial</h2>
+            <p>¿En qué puedo ayudarte?</p>
+            <div class="sugerencias" aria-label="Preguntas sugeridas">
+              <button type="button" class="chip" data-pregunta="¿Cuál es el Top 5 de profesores?">Top 5 de profesores</button>
+              <button type="button" class="chip" data-pregunta="¿Qué profesor es el mejor para Cálculo?">Mejor en Cálculo</button>
+              <button type="button" class="chip" data-pregunta="¿Qué profesor es el mejor para Algoritmos?">Mejor en Algoritmos</button>
+            </div>
+            <div id="chatIA" class="chat-ia" aria-live="polite"></div>
+            <form id="formIA" class="form-ia">
+              <input type="text" id="preguntaIA" placeholder="Escribe tu pregunta..." autocomplete="off" aria-label="Pregunta para la IA">
+              <button type="submit" id="btnPreguntarIA">Preguntar</button>
+            </form>
+          </div>
+
+        </div>
+
+        <!-- COLUMNA DERECHA -->
+        <div class="contenido-principal">
+          <div class="cabecera-resultados">
+            <h2>Resultados <small id="contadorResultados"></small></h2>
+            <div class="filtros" id="filtros" hidden>
+              <label>Curso
+                <select id="filtroCurso"><option value="">Todos</option></select>
+              </label>
+              <label>Ordenar por
+                <select id="ordenResultados">
+                  <option value="mejor">Mejor calificados</option>
+                  <option value="opiniones">Más opiniones</option>
+                  <option value="az">Nombre (A-Z)</option>
+                </select>
+              </label>
+            </div>
+          </div>
+          <div id="resultados"></div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <footer class="barra-inferior">
+    <div class="pie-marca"><strong>🎓 Teachers UPC</strong><span>Opiniones de alumnos para alumnos.</span></div>
+    <div class="pie-enlaces"><a href="#" id="abrirTerminos">Términos y normas</a></div>
+    <p class="pie-copy">© 2026 Teachers UPC. Proyecto académico.</p>
+  </footer>
+
+  <!-- VENTANA DE INICIO DE SESIÓN / REGISTRO -->
+  <div id="modalAuth" class="modal">
+    <div class="contenido-perfil contenido-auth" role="dialog" aria-modal="true" aria-labelledby="tituloAuth">
+      <button id="cerrarAuth" class="cerrar-modal" aria-label="Cerrar">×</button>
+      <h2 id="tituloAuth">Iniciar sesión</h2>
+      <form id="formAuth" autocomplete="on">
+        <label id="campoNombre" hidden>Nombre completo
+          <input type="text" id="authNombre" autocomplete="name">
+        </label>
+        <label>Correo institucional
+          <input type="email" id="authCorreo" autocomplete="email" required>
+        </label>
+        <label>Contraseña
+          <input type="password" id="authClave" autocomplete="current-password" required>
+        </label>
+        <p id="errorAuth" class="mensaje-error" role="alert" hidden></p>
+        <button type="submit" id="btnEnviarAuth" class="btn-principal">Entrar</button>
+      </form>
+      <p class="cambiar-auth">
+        <span id="textoCambiar">¿No tienes cuenta?</span>
+        <a href="#" id="linkCambiarAuth">Crear cuenta</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- VENTANA DEL PERFIL DEL PROFESOR -->
+  <div id="modalPerfil" class="modal">
+    <div class="contenido-perfil" role="dialog" aria-modal="true" aria-labelledby="nombrePerfil">
+      <button id="cerrarPerfil" class="cerrar-modal" aria-label="Cerrar">×</button>
+
+      <div class="perfil-superior">
+        <img id="fotoPerfil" src="" alt="Foto del profesor">
+        <div>
+          <h2 id="nombrePerfil"></h2>
+          <p id="cursoPerfil"></p>
+          <h3 id="notaPerfil"></h3>
+          <p id="cantidadComentarios"></p>
+        </div>
+      </div>
+
+      <div id="distribucion" class="distribucion" aria-label="Distribución de puntajes"></div>
+
+      <hr>
+
+      <h3>Publicar una opinión</h3>
+      <form id="formOpinion" class="form-opinion">
+        <textarea id="textoOpinion" rows="3" maxlength="500" placeholder="Cuéntanos cómo fue tu experiencia con este docente..." required></textarea>
+        <div class="contador"><span id="contadorCaracteres">0</span>/500</div>
+        <div class="fila-opinion">
+          <div class="selector-estrellas" id="estrellas" role="radiogroup" aria-label="Puntaje">
+            <span class="etiqueta-estrellas">Tu puntaje:</span>
+            <button type="button" role="radio" aria-checked="false" data-valor="1" aria-label="1 estrella">★</button>
+            <button type="button" role="radio" aria-checked="false" data-valor="2" aria-label="2 estrellas">★</button>
+            <button type="button" role="radio" aria-checked="false" data-valor="3" aria-label="3 estrellas">★</button>
+            <button type="button" role="radio" aria-checked="false" data-valor="4" aria-label="4 estrellas">★</button>
+            <button type="button" role="radio" aria-checked="false" data-valor="5" aria-label="5 estrellas">★</button>
+          </div>
+          <button type="submit" id="btnPublicar" class="btn-principal">Publicar</button>
+        </div>
+        <p id="errorOpinion" class="mensaje-error" role="alert" hidden></p>
+      </form>
+
+      <h3>Opiniones de alumnos</h3>
+      <div id="listaComentarios"></div>
+    </div>
+  </div>
+
+  <!-- TÉRMINOS Y NORMAS -->
+  <div id="modalTerminos" class="modal">
+    <div class="contenido-perfil contenido-auth" role="dialog" aria-modal="true" aria-labelledby="tituloTerminos">
+      <button id="cerrarTerminos" class="cerrar-modal" aria-label="Cerrar">×</button>
+      <h2 id="tituloTerminos">Términos y normas</h2>
+      <ul class="lista-normas">
+        <li>Las opiniones deben basarse en tu experiencia real como alumno.</li>
+        <li>Sé respetuoso: no se permiten insultos, amenazas ni datos personales.</li>
+        <li>Las opiniones se muestran de forma anónima a los demás usuarios.</li>
+        <li>Las calificaciones se calculan con un promedio ponderado asistido por IA para reducir sesgos.</li>
+        <li>Esta plataforma es un proyecto académico y no representa a la universidad.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div id="toasts" class="toasts" aria-live="polite"></div>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
